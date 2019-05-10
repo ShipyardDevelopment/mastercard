@@ -1,0 +1,298 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Handling Form Submission</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.4.1/css/swiper.min.css">
+    <link rel="stylesheet" href="main.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,700" rel="stylesheet">
+</head>
+<body>
+    <section class="currency-title">
+        <img src="">
+        <h1>Currency</h1>
+    </section>
+
+    <section class="currency-converter">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <form th:action="@{/currency}" method="get">
+
+                        <div class="currency-select">
+
+                            <div class="select-from">
+                                <label>From</label>
+                                <select th:name="sourceCurrency" th:value="*{result.getSourceCurrency()}">
+                                    <option th:each="c: ${result.getCurrencyList()}" th:value="${c.getCode()}" th:text="${c.getName()}"
+                                            th:selected="${c.getCode()==result.getSourceCurrency()}">
+                                    </option>
+                                </select>
+                            </div>
+
+
+                            <div class="select-to">
+                                <label>To</label>
+                                <select th:name="targetCurrency" th:value="*{result.getTargetCurrency()}">
+                                    <option th:each="c: ${result.getCurrencyList()}" th:value="${c.getCode()}" th:text="${c.getName()}"
+                                            th:selected="${c.getCode()==result.getTargetCurrency()}">
+                                    </option>
+                                </select>
+                            </div>
+
+                        </div>
+
+
+                        <div class="currency-buttons">
+                            <div class="currency-button-wrapper">
+                                <input type="text" th:name="amount" th:value="*{result.getTransferAmount()}"/>
+                                <button type="submit">Submit</button>
+                            </div>
+                            <div class="currency-output">
+
+                                <div class="amount">
+                                    <h3><p th:text="${result.getTargetCurrencyAmount()}"/></h3>
+                                    <h4>Amount</h4>
+                                </div>
+                                <div class="conversion-rate">
+                                    <h3>12.34</h3>
+                                    <h4><p th:text="${result.getConversionRate()}"/></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</body>
+<style>
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+        grid-auto-rows: 1fr;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .grid::before {
+        content: '';
+        width: 0;
+        padding-bottom: 100%;
+        grid-row: 1 / 1;
+        grid-column: 1 / 1;
+    }
+
+    .grid > *:first-child {
+        grid-row: 1 / 1;
+        grid-column: 1 / 1;
+    }
+
+    /* Just to make the grid visible */
+
+    .grid > * {
+        background: rgba(0, 0, 0, 0.1);
+        border: 1px white solid;
+    }
+
+    .currency-title {
+        background-color: #141413;
+        width: 100%;
+        color: #fff;
+        text-align: center;
+
+        background-image: url('https://images.unsplash.com/photo-1504164996022-09080787b6b3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2850&q=80');
+        /*background-position: center;*/
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+        padding: 90px 0px;
+    }
+
+    .currency-title:after {
+        content: "";
+        width: 100%;
+        height: 100%;
+        background-color: #141413;
+        display: block;
+        position: absolute;
+        top: 0;
+        opacity: 0.3;
+    }
+
+    .currency-title h1 {
+        position: relative;
+        z-index: 2;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 400;
+        font-size: 3.5rem;
+    }
+
+    .currency-converter {
+        margin-top: 4rem;
+    }
+
+    .currency-select {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+    }
+
+    .select-from, .select-to {
+        width: calc(50% - 50px);
+    }
+
+    select {
+        background-color: #fff;
+        text-transform: capitalize;
+        font-family: 'Noto Sans', sans-serif;
+        font-weight: 700;
+        color: #141413;
+
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        border-radius: 0 !important;
+        border: none;
+        border-bottom: 2px solid #eaebec;
+        position: relative;
+        width: 100%;
+        padding-bottom: 1rem;
+        font-family: 'Montserrat', sans-serif;
+
+    }
+
+    select:after {
+        content: '';
+        position: absolute;
+        left: 18px;
+        top: 50px;
+        width: 0;
+        height: 0;
+        border-left: 20px solid transparent;
+        border-right: 20px solid transparent;
+        border-top: 20px solid #000;
+        clear: both;
+    }
+
+    option {
+        /*text-transform: lowercase;*/
+        font-family: 'Noto Sans', sans-serif;
+        font-weight: 700;
+    }
+
+
+    label {
+        display: block;
+        color: #8c8c8c;
+        font-family: 'Noto Sans', sans-serif;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 1px;
+        margin-bottom: 0px;
+    }
+
+    .currency-buttons {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .currency-buttons input {
+        width: 100%;
+        font-size: 3rem;
+        font-family: 'Montserrat', sans-serif;
+        border: none;
+        text-align: center;
+    }
+
+    .currency-buttons button {
+        width: 300px;
+        background-color: #ff8b1a;
+        padding: 10px 20px;
+        color: $white;
+        font-weight: 600;
+        margin-top: 0.5rem;
+        color: #fff;
+        border: none;
+        margin-left: calc(50% - 150px);
+    }
+
+    .currency-button-wrapper {
+        width: calc(50% - 50px);
+    }
+
+    .currency-output {
+        width: calc(50% - 50px);
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .amount, .conversion-rate {
+        width: calc(50% - 50px);
+        text-align: center;
+        padding-top: 0.5rem;
+    }
+
+    h4 {
+        font-family: 'Noto Sans', sans-serif;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 1px;
+        margin-bottom: 0px;
+        color: #8c8c8c;
+    }
+
+    h3 {
+        font-size: 3rem;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 400;
+    }
+
+
+    @media only screen and (max-width: 600px) {
+        .currency-select {
+            display: block;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .select-from, .select-to {
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .currency-buttons {
+            display: block;
+            justify-content: space-between;
+        }
+
+        .amount, .conversion-rate {
+            width: 100%;
+            text-align: center;
+            padding-top: 0.5rem;
+        }
+
+        .currency-output {
+            width: 100%;
+            display: block;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .currency-button-wrapper {
+            width: 100%;
+            margin-bottom: : 2rem !important;
+        }
+    }
+</style>
+</html>
